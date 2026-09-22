@@ -74,12 +74,45 @@ body {
 
 /* ============= Portada ============= */
 .cover {
+    position: relative;
     text-align: center;
     padding: var(--spacing-xl) var(--spacing-sm);
     background: linear-gradient(135deg, var(--color-gray-dark) 0%, #34495e 100%);
     color: var(--color-white);
     margin-bottom: var(--spacing-lg);
     animation: fadeInUp 0.8s ease-out;
+    overflow: hidden;
+}
+
+.cover::before,
+.cover::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.cover::before {
+    width: 320px;
+    height: 320px;
+    background: var(--color-primary);
+    top: -120px;
+    right: -100px;
+}
+
+.cover::after {
+    width: 260px;
+    height: 260px;
+    background: var(--color-secondary);
+    bottom: -100px;
+    left: -80px;
+}
+
+.cover > * {
+    position: relative;
+    z-index: 1;
 }
 
 .logo-container {
@@ -89,6 +122,21 @@ body {
 .logo-container img {
     max-width: 120px;
     height: auto;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+}
+
+.cover-eyebrow {
+    display: inline-block;
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-sm);
+    padding: 0.25rem 1rem;
+    border: 1px solid rgba(180, 208, 6, 0.4);
+    border-radius: var(--radius-full);
+    background: rgba(180, 208, 6, 0.08);
 }
 
 .cover-title {
@@ -99,6 +147,14 @@ body {
     letter-spacing: -0.02em;
 }
 
+.cover-divider {
+    width: 70px;
+    height: 3px;
+    margin: var(--spacing-md) auto var(--spacing-md);
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--radius-full);
+}
+
 .cover-subtitle {
     font-size: var(--font-size-large);
     margin-bottom: var(--spacing-md);
@@ -107,18 +163,31 @@ body {
 
 .cover-meta {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
     font-size: var(--font-size-small);
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
-.date {
+.meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.06);
     font-weight: 500;
+    line-height: 1.2;
 }
 
-.authorship {
-    font-style: italic;
+.meta-icon {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
 }
 
 /* ============= Resumen Ejecutivo ============= */
@@ -308,19 +377,42 @@ body {
     border-radius: 2px;
 }
 
-.guide-card a {
+.guide-button {
     display: inline-block;
-    color: var(--color-primary);
+    color: var(--color-white);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-smooth);
     font-size: var(--font-size-small);
-    word-break: break-all;
 }
 
-.guide-card a:hover {
-    color: var(--color-secondary);
-    text-decoration: underline;
+.guide-button::after {
+    content: ' →';
+}
+
+.guide-button--alojamientos {
+    background: linear-gradient(135deg, var(--color-primary), #01919a);
+}
+
+.guide-button--gastronomia {
+    background: linear-gradient(135deg, var(--color-secondary), #e06500);
+}
+
+.guide-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.guide-button--alojamientos:hover {
+    background: linear-gradient(135deg, #019ba5, var(--color-primary));
+}
+
+.guide-button--gastronomia:hover {
+    background: linear-gradient(135deg, #e06500, var(--color-secondary));
 }
 
 .guide-description {
@@ -1010,32 +1102,57 @@ body {
 .document-footer {
     background: linear-gradient(135deg, var(--color-gray-dark) 0%, #1a2533 100%);
     color: var(--color-white);
-    padding: var(--spacing-xl) var(--spacing-sm);
+    padding: var(--spacing-xl) var(--spacing-xl);
     margin-top: var(--spacing-lg);
 }
 
-.footer-links {
-    text-align: center;
+.footer-sections {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
+}
+
+.footer-links,
+.acknowledgments {
+    text-align: center;
+    padding: var(--spacing-md);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.footer-links h3,
+.acknowledgments h3 {
+    margin-bottom: var(--spacing-md);
 }
 
 .footer-links h3 {
     color: var(--color-accent);
     font-size: var(--font-size-large);
-    margin-bottom: var(--spacing-md);
+}
+
+.acknowledgments h3 {
+    color: var(--color-secondary);
+    font-size: var(--font-size-large);
 }
 
 .links-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--spacing-sm);
 }
 
 .guide-link {
     display: inline-block;
+    width: auto;
+    min-width: 220px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-tertiary));
     color: var(--color-white);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
     border-radius: var(--radius-md);
     text-decoration: none;
     font-weight: 500;
@@ -1048,17 +1165,6 @@ body {
     background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-}
-
-.acknowledgments {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.acknowledgments h3 {
-    color: var(--color-secondary);
-    font-size: var(--font-size-large);
-    margin-bottom: var(--spacing-md);
 }
 
 .acknowledgments p {
@@ -1076,6 +1182,7 @@ body {
 .institutional-signature p {
     font-size: var(--font-size-base);
     font-weight: 600;
+    opacity: 0.9;
 }
 
 /* ============= Animaciones ============= */
@@ -1310,6 +1417,12 @@ body {
         padding: 2rem 1rem;
     }
     
+    .footer-sections {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
     .footer-links h3,
     .acknowledgments h3 {
         margin-bottom: 0.75rem;
@@ -1318,6 +1431,11 @@ body {
     /* Enlaces de guía */
     .links-container {
         gap: 0.75rem;
+    }
+    
+    .guide-link {
+        width: 100%;
+        min-width: 0;
     }
 }
 
